@@ -44,6 +44,11 @@
                 <artifactId>plat-core</artifactId>
                 <version>${plat.common.version}</version>
             </dependency>
+            <dependency>
+                <groupId>org.jigang.plat</groupId>
+                <artifactId>plat-spring-common</artifactId>
+                <version>${plat.common.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 </project>
