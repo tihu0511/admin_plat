@@ -5,10 +5,10 @@ import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
-import org.jigang.plat.admin.entity.SysMenuEntity;
-import org.jigang.plat.admin.entity.SysUserEntity;
-import org.jigang.plat.admin.service.ISysMenuService;
-import org.jigang.plat.admin.service.ISysUserService;
+import org.jigang.plat.admin.entity.sys.SysMenuEntity;
+import org.jigang.plat.admin.entity.sys.SysUserEntity;
+import org.jigang.plat.admin.service.sys.ISysMenuService;
+import org.jigang.plat.admin.service.sys.ISysUserService;
 import org.jigang.plat.core.lang.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 

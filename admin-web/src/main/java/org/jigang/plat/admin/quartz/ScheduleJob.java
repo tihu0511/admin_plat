@@ -1,9 +1,9 @@
 package org.jigang.plat.admin.quartz;
 
 import org.apache.commons.lang.StringUtils;
-import org.jigang.plat.admin.entity.ScheduleJobEntity;
-import org.jigang.plat.admin.entity.ScheduleJobLogEntity;
-import org.jigang.plat.admin.service.IScheduleJobLogService;
+import org.jigang.plat.admin.entity.sys.ScheduleJobEntity;
+import org.jigang.plat.admin.entity.sys.ScheduleJobLogEntity;
+import org.jigang.plat.admin.service.sys.IScheduleJobLogService;
 import org.jigang.plat.spring.context.SpringContextUtil;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;

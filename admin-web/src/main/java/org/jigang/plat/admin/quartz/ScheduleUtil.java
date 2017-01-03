@@ -1,6 +1,6 @@
 package org.jigang.plat.admin.quartz;
 
-import org.jigang.plat.admin.entity.ScheduleJobEntity;
+import org.jigang.plat.admin.entity.sys.ScheduleJobEntity;
 import org.jigang.plat.admin.exception.AdminException;
 import org.quartz.*;
 

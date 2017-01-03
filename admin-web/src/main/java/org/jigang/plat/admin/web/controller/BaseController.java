@@ -1,6 +1,6 @@
 package org.jigang.plat.admin.web.controller;
 
-import org.jigang.plat.admin.entity.SysUserEntity;
+import org.jigang.plat.admin.entity.sys.SysUserEntity;
 import org.jigang.plat.admin.util.ShiroUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

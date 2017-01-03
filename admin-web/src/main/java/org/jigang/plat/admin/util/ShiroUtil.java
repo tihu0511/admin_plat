@@ -3,7 +3,7 @@ package org.jigang.plat.admin.util;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
-import org.jigang.plat.admin.entity.SysUserEntity;
+import org.jigang.plat.admin.entity.sys.SysUserEntity;
 
 /**
  * Shiro帮助类
