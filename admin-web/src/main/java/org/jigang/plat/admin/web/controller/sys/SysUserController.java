@@ -4,6 +4,7 @@ import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.crypto.hash.Sha256Hash;
+import org.jigang.plat.admin.constant.PermConstant;
 import org.jigang.plat.admin.entity.PageEntityWrapper;
 import org.jigang.plat.admin.entity.sys.SysUserEntity;
 import org.jigang.plat.admin.service.sys.ISysUserRoleService;
@@ -44,7 +45,7 @@ public class SysUserController extends BaseController {
      * 所有用户列表
      */
     @RequestMapping("/list")
-    @RequiresPermissions("sys:user:list")
+    @RequiresPermissions(PermConstant.SYS_USER_LIST)
     public WebResponse list(Integer page, Integer limit){
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("offset", (page - 1) * limit);
@@ -89,7 +90,7 @@ public class SysUserController extends BaseController {
      * 用户信息
      */
     @RequestMapping("/info/{userId}")
-    @RequiresPermissions("sys:user:info")
+    @RequiresPermissions(PermConstant.SYS_USER_INFO)
     public WebResponse info(@PathVariable("userId") Long userId){
         SysUserEntity user = sysUserService.queryObject(userId);
 
@@ -104,7 +105,7 @@ public class SysUserController extends BaseController {
      * 保存用户
      */
     @RequestMapping("/save")
-    @RequiresPermissions("sys:user:save")
+    @RequiresPermissions(PermConstant.SYS_USER_SAVE)
     public WebResponse save(@RequestBody SysUserEntity user){
         if(StringUtils.isBlank(user.getUsername())){
             return WebResponse.error("用户名不能为空");
@@ -122,7 +123,7 @@ public class SysUserController extends BaseController {
      * 修改用户
      */
     @RequestMapping("/update")
-    @RequiresPermissions("sys:user:update")
+    @RequiresPermissions(PermConstant.SYS_USER_UPDATE)
     public WebResponse update(@RequestBody SysUserEntity user){
         if(StringUtils.isBlank(user.getUsername())){
             return WebResponse.error("用户名不能为空");
@@ -137,7 +138,7 @@ public class SysUserController extends BaseController {
      * 删除用户
      */
     @RequestMapping("/delete")
-    @RequiresPermissions("sys:user:delete")
+    @RequiresPermissions(PermConstant.SYS_USER_DELETE)
     public WebResponse delete(@RequestBody Long[] userIds){
         if(ArrayUtils.contains(userIds, 1L)){
             return WebResponse.error("系统管理员不能删除");

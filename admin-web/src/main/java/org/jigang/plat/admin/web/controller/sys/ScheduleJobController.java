@@ -2,6 +2,7 @@ package org.jigang.plat.admin.web.controller.sys;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.jigang.plat.admin.constant.PermConstant;
 import org.jigang.plat.admin.entity.PageEntityWrapper;
 import org.jigang.plat.admin.entity.sys.ScheduleJobEntity;
 import org.jigang.plat.admin.exception.AdminException;
@@ -33,7 +34,7 @@ public class ScheduleJobController {
      * 定时任务列表
      */
     @RequestMapping("/list")
-    @RequiresPermissions("sys:schedule:list")
+    @RequiresPermissions(PermConstant.SYS_SHCEDULE_LIST)
     public WebResponse list(Integer page, Integer limit){
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("offset", (page - 1) * limit);
@@ -52,7 +53,7 @@ public class ScheduleJobController {
      * 定时任务信息
      */
     @RequestMapping("/info/{jobId}")
-    @RequiresPermissions("sys:schedule:info")
+    @RequiresPermissions(PermConstant.SYS_SHCEDULE_INFO)
     public WebResponse info(@PathVariable("jobId") Long jobId){
         ScheduleJobEntity schedule = scheduleJobService.queryObject(jobId);
 
@@ -63,7 +64,7 @@ public class ScheduleJobController {
      * 保存定时任务
      */
     @RequestMapping("/save")
-    @RequiresPermissions("sys:schedule:save")
+    @RequiresPermissions(PermConstant.SYS_SHCEDULE_SAVE)
     public WebResponse save(@RequestBody ScheduleJobEntity scheduleJob){
         //数据校验
         verifyForm(scheduleJob);
@@ -77,7 +78,7 @@ public class ScheduleJobController {
      * 修改定时任务
      */
     @RequestMapping("/update")
-    @RequiresPermissions("sys:schedule:update")
+    @RequiresPermissions(PermConstant.SYS_SHCEDULE_UPDATE)
     public WebResponse update(@RequestBody ScheduleJobEntity scheduleJob){
         //数据校验
         verifyForm(scheduleJob);
@@ -91,7 +92,7 @@ public class ScheduleJobController {
      * 删除定时任务
      */
     @RequestMapping("/delete")
-    @RequiresPermissions("sys:schedule:delete")
+    @RequiresPermissions(PermConstant.SYS_SHCEDULE_DELETE)
     public WebResponse delete(@RequestBody Long[] jobIds){
         scheduleJobService.deleteBatch(jobIds);
 
@@ -102,7 +103,7 @@ public class ScheduleJobController {
      * 立即执行任务
      */
     @RequestMapping("/run")
-    @RequiresPermissions("sys:schedule:run")
+    @RequiresPermissions(PermConstant.SYS_SHCEDULE_RUN)
     public WebResponse run(@RequestBody Long[] jobIds){
         scheduleJobService.run(jobIds);
 
@@ -113,7 +114,7 @@ public class ScheduleJobController {
      * 暂停定时任务
      */
     @RequestMapping("/pause")
-    @RequiresPermissions("sys:schedule:pause")
+    @RequiresPermissions(PermConstant.SYS_SHCEDULE_PAUSE)
     public WebResponse pause(@RequestBody Long[] jobIds){
         scheduleJobService.pause(jobIds);
 
@@ -124,7 +125,7 @@ public class ScheduleJobController {
      * 恢复定时任务
      */
     @RequestMapping("/resume")
-    @RequiresPermissions("sys:schedule:resume")
+    @RequiresPermissions(PermConstant.SYS_SHCEDULE_RESUME)
     public WebResponse resume(@RequestBody Long[] jobIds){
         scheduleJobService.resume(jobIds);
 

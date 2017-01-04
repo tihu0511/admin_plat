@@ -1,6 +1,7 @@
 package org.jigang.plat.admin.web.controller.sys;
 
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.jigang.plat.admin.constant.PermConstant;
 import org.jigang.plat.admin.entity.PageEntityWrapper;
 import org.jigang.plat.admin.entity.sys.SysRoleEntity;
 import org.jigang.plat.admin.service.sys.ISysRoleMenuService;
@@ -35,7 +36,7 @@ public class SysRoleController {
      * 角色列表
      */
     @RequestMapping("/list")
-    @RequiresPermissions("sys:role:list")
+    @RequiresPermissions(PermConstant.SYS_ROLE_LIST)
     public WebResponse list(Integer page, Integer limit){
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("offset", (page - 1) * limit);
@@ -51,10 +52,10 @@ public class SysRoleController {
     }
 
     /**
-     * 角色列表
+     * 角色选择
      */
     @RequestMapping("/select")
-    @RequiresPermissions("sys:role:select")
+    @RequiresPermissions(PermConstant.SYS_ROLE_SELECT)
     public WebResponse select(){
         //查询列表数据
         List<SysRoleEntity> list = sysRoleService.queryList(new HashMap<String, Object>());
@@ -66,7 +67,7 @@ public class SysRoleController {
      * 角色信息
      */
     @RequestMapping("/info/{roleId}")
-    @RequiresPermissions("sys:role:info")
+    @RequiresPermissions(PermConstant.SYS_ROLE_INFO)
     public WebResponse info(@PathVariable("roleId") Long roleId){
         SysRoleEntity role = sysRoleService.queryObject(roleId);
 
@@ -81,7 +82,7 @@ public class SysRoleController {
      * 保存角色
      */
     @RequestMapping("/save")
-    @RequiresPermissions("sys:role:save")
+    @RequiresPermissions(PermConstant.SYS_ROLE_SAVE)
     public WebResponse save(@RequestBody SysRoleEntity role){
         if(StringUtil.notHasLength(role.getRoleName())){
             return WebResponse.error("角色名称不能为空");
@@ -96,7 +97,7 @@ public class SysRoleController {
      * 修改角色
      */
     @RequestMapping("/update")
-    @RequiresPermissions("sys:role:update")
+    @RequiresPermissions(PermConstant.SYS_ROLE_UPDATE)
     public WebResponse update(@RequestBody SysRoleEntity role){
         if(StringUtil.notHasLength(role.getRoleName())){
             return WebResponse.error("角色名称不能为空");
@@ -111,7 +112,7 @@ public class SysRoleController {
      * 删除角色
      */
     @RequestMapping("/delete")
-    @RequiresPermissions("sys:role:delete")
+    @RequiresPermissions(PermConstant.SYS_ROLE_DELETE)
     public WebResponse delete(@RequestBody Long[] roleIds){
         sysRoleService.deleteBatch(roleIds);
 

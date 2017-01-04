@@ -7,13 +7,13 @@
 <body>
 <div id="adminapp">
 	<div class="grid-btn">
-		#if($shiro.hasPermission("sys:user:save"))
+		#if($shiro.hasPermission($fieldTool.in("org.jigang.plat.admin.constant.PermConstant").SYS_USER_SAVE))
 		<a class="btn btn-default" href="user_add.html">新增</a>
 		#end
-		#if($shiro.hasPermission("sys:user:update"))
+		#if($shiro.hasPermission($fieldTool.in("org.jigang.plat.admin.constant.PermConstant").SYS_USER_UPDATE))
 		<button type="button"  class="btn btn-default" @click="update">修改</button>
 		#end
-		#if($shiro.hasPermission("sys:user:delete"))
+		#if($shiro.hasPermission($fieldTool.in("org.jigang.plat.admin.constant.PermConstant").SYS_USER_DELETE))
 		<button type="button" class="btn btn-default" @click="del">删除</button>
 		#end
 	</div>

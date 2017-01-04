@@ -2,6 +2,7 @@ package org.jigang.plat.admin.web.controller.sys;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.jigang.plat.admin.constant.PermConstant;
 import org.jigang.plat.admin.entity.PageEntityWrapper;
 import org.jigang.plat.admin.entity.sys.SysConfigEntity;
 import org.jigang.plat.admin.exception.AdminException;
@@ -33,7 +34,7 @@ public class SysConfigController {
      * 所有配置列表
      */
     @RequestMapping("/list")
-    @RequiresPermissions("sys:config:list")
+    @RequiresPermissions(PermConstant.SYS_CONFIG_LIST)
     public WebResponse list(Integer page, Integer limit){
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("offset", (page - 1) * limit);
@@ -53,7 +54,7 @@ public class SysConfigController {
      * 配置信息
      */
     @RequestMapping("/info/{id}")
-    @RequiresPermissions("sys:config:info")
+    @RequiresPermissions(PermConstant.SYS_CONFIG_INFO)
     public WebResponse info(@PathVariable("id") Long id){
         SysConfigEntity config = sysConfigService.queryObject(id);
 
@@ -64,7 +65,7 @@ public class SysConfigController {
      * 保存配置
      */
     @RequestMapping("/save")
-    @RequiresPermissions("sys:config:save")
+    @RequiresPermissions(PermConstant.SYS_CONFIG_SAVE)
     public WebResponse save(@RequestBody SysConfigEntity config){
         //参数校验
         verifyForm(config);
@@ -78,7 +79,7 @@ public class SysConfigController {
      * 修改配置
      */
     @RequestMapping("/update")
-    @RequiresPermissions("sys:config:update")
+    @RequiresPermissions(PermConstant.SYS_CONFIG_UPDATE)
     public WebResponse update(@RequestBody SysConfigEntity config){
         //参数校验
         verifyForm(config);
@@ -92,7 +93,7 @@ public class SysConfigController {
      * 删除配置
      */
     @RequestMapping("/delete")
-    @RequiresPermissions("sys:config:delete")
+    @RequiresPermissions(PermConstant.SYS_CONFIG_DELETE)
     public WebResponse delete(@RequestBody Long[] ids){
         sysConfigService.deleteBatch(ids);
 
