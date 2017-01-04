@@ -3,9 +3,9 @@ $(function () {
         url: '../sys/menu/list',
         datatype: "json",
         colModel: [			
-			{ label: '菜单ID', name: 'menuId', width: 40, key: true },
-			{ label: '菜单名称', name: 'name', width: 60 },
-			{ label: '上级菜单', name: 'parentName', width: 60 },
+			{ label: '菜单ID', name: 'menuId', width: 40, key: true},
+			{ label: '菜单名称', name: 'name', width: 60, search: true, stype: 'text'},
+			{ label: '上级菜单', name: 'parentName', width: 60},
 			{ label: '菜单图标', name: 'icon', width: 50, formatter: function(value, options, row){
 				return value == null ? '' : '<i class="'+value+' fa-lg"></i>';
 			}},
@@ -22,7 +22,7 @@ $(function () {
 					return '<span class="label label-warning">按钮</span>';
 				}
 			}},
-			{ label: '排序号', name: 'orderNum', width: 50}                   
+			{ label: '排序号', name: 'orderNum', width: 50}
         ],
 		viewrecords: true,
         height: 400,
@@ -49,6 +49,26 @@ $(function () {
         	$("#jqGrid").closest(".ui-jqgrid-bdiv").css({ "overflow-x" : "hidden" }); 
         }
     });
+	/*.navGrid('#jqGridPager',
+	{refresh:false,view:false, del:false,add:false,edit:false,searchtext:'查询'},{},{},{},{multipleSearch:true} );*/
+
+	// jQuery("#jqGrid").jqGrid('filterToolbar',{}); //toolBar search
+
+	//custom search
+	var sg = jQuery("#jqGrid_search").filterGrid('#jqGrid',{
+		filterModel: [
+			{label:'菜单名称', name: 'name', stype: 'text', defval: ''},
+			{label:'上级菜单', name: 'parentName', stype: 'text', defval: ''},
+			{label:'菜单URL', name: 'parentName', stype: 'text', defval: ''},
+			{label:'授权标识', name: 'perms', stype: 'text', defval: ''},
+		],
+		searchButton: "搜索",
+		clearButton: "重置",
+		enableSearch: true,
+		enableClear: true
+	})[0];
+	// sg.triggerSearch();
+	// sg.clearSearch();
 });
 
 var vm = new Vue({

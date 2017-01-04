@@ -1,7 +1,8 @@
 package org.jigang.plat.admin.web.controller.sys;
 
 import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.jigang.plat.admin.constant.AdminConstant.*;
+import org.jigang.plat.admin.constant.MenuTypeEnum;
+import org.jigang.plat.admin.constant.PermConstant;
 import org.jigang.plat.admin.entity.PageEntityWrapper;
 import org.jigang.plat.admin.entity.sys.SysMenuEntity;
 import org.jigang.plat.admin.exception.AdminException;
@@ -35,7 +36,7 @@ public class SysMenuController extends BaseController {
      * 所有菜单列表
      */
     @RequestMapping("/list")
-    @RequiresPermissions("sys:menu:list")
+    @RequiresPermissions(PermConstant.SYS_MENU_LIST)
     public WebResponse list(Integer page, Integer limit) {
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("offset", (page - 1) * limit);
@@ -54,7 +55,7 @@ public class SysMenuController extends BaseController {
      * 选择菜单(添加、修改菜单)
      */
     @RequestMapping("/select")
-    @RequiresPermissions("sys:menu:select")
+    @RequiresPermissions(PermConstant.SYS_MENU_SELECT)
     public WebResponse select() {
         //查询列表数据
         List<SysMenuEntity> menuList = sysMenuService.queryNotButtonList();
@@ -74,7 +75,7 @@ public class SysMenuController extends BaseController {
      * 角色授权菜单
      */
     @RequestMapping("/perms")
-    @RequiresPermissions("sys:menu:perms")
+    @RequiresPermissions(PermConstant.SYS_MENU_PERMS)
     public WebResponse perms() {
         //查询列表数据
         List<SysMenuEntity> menuList = sysMenuService.queryList(new HashMap<String, Object>());
@@ -86,7 +87,7 @@ public class SysMenuController extends BaseController {
      * 菜单信息
      */
     @RequestMapping("/info/{menuId}")
-    @RequiresPermissions("sys:menu:info")
+    @RequiresPermissions(PermConstant.SYS_MENU_INFO)
     public WebResponse info(@PathVariable("menuId") Long menuId) {
         SysMenuEntity menu = sysMenuService.queryObject(menuId);
         return WebResponse.ok().put("menu", menu);
@@ -96,7 +97,7 @@ public class SysMenuController extends BaseController {
      * 保存
      */
     @RequestMapping("/save")
-    @RequiresPermissions("sys:menu:save")
+    @RequiresPermissions(PermConstant.SYS_MENU_SAVE)
     public WebResponse save(@RequestBody SysMenuEntity menu) {
         //数据校验
         verifyForm(menu);
@@ -110,7 +111,7 @@ public class SysMenuController extends BaseController {
      * 修改
      */
     @RequestMapping("/update")
-    @RequiresPermissions("sys:menu:update")
+    @RequiresPermissions(PermConstant.SYS_MENU_UPDATE)
     public WebResponse update(@RequestBody SysMenuEntity menu) {
         //数据校验
         verifyForm(menu);
@@ -124,7 +125,7 @@ public class SysMenuController extends BaseController {
      * 删除
      */
     @RequestMapping("/delete")
-    @RequiresPermissions("sys:menu:delete")
+    @RequiresPermissions(PermConstant.SYS_MENU_DELETE)
     public WebResponse delete(@RequestBody Long[] menuIds) {
         for (Long menuId : menuIds) { //TODO 系统菜单判断逻辑不严谨，且不应该直接删除菜单，待修改
             if (menuId.longValue() <= 28) {
@@ -160,31 +161,31 @@ public class SysMenuController extends BaseController {
         }
 
         //菜单
-        if (menu.getType() == MenuType.MENU.getValue()) {
+        if (menu.getType() == MenuTypeEnum.MENU.getValue()) {
             if (StringUtil.notHasLength(menu.getUrl())) {
                 throw new AdminException("菜单URL不能为空");
             }
         }
 
         //上级菜单类型
-        int parentType = MenuType.CATALOG.getValue();
+        int parentType = MenuTypeEnum.CATALOG.getValue();
         if (menu.getParentId() != 0) {
             SysMenuEntity parentMenu = sysMenuService.queryObject(menu.getParentId());
             parentType = parentMenu.getType();
         }
 
         //目录、菜单
-        if (menu.getType() == MenuType.CATALOG.getValue() ||
-                menu.getType() == MenuType.MENU.getValue()) {
-            if (parentType != MenuType.CATALOG.getValue()) {
+        if (menu.getType() == MenuTypeEnum.CATALOG.getValue() ||
+                menu.getType() == MenuTypeEnum.MENU.getValue()) {
+            if (parentType != MenuTypeEnum.CATALOG.getValue()) {
                 throw new AdminException("上级菜单只能为目录类型");
             }
             return;
         }
 
         //按钮
-        if (menu.getType() == MenuType.BUTTON.getValue()) {
-            if (parentType != MenuType.MENU.getValue()) {
+        if (menu.getType() == MenuTypeEnum.BUTTON.getValue()) {
+            if (parentType != MenuTypeEnum.MENU.getValue()) {
                 throw new AdminException("上级菜单只能为菜单类型");
             }
             return;

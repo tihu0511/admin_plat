@@ -1,6 +1,6 @@
 package org.jigang.plat.admin.service.sys.impl;
 
-import org.jigang.plat.admin.constant.AdminConstant.*;
+import org.jigang.plat.admin.constant.MenuTypeEnum;
 import org.jigang.plat.admin.dao.sys.ISysMenuDao;
 import org.jigang.plat.admin.entity.sys.SysMenuEntity;
 import org.jigang.plat.admin.service.sys.ISysMenuService;
@@ -110,7 +110,7 @@ public class SysMenuServiceImpl implements ISysMenuService {
         List<SysMenuEntity> subMenuList = new ArrayList<SysMenuEntity>();
 
         for(SysMenuEntity entity : menuList){
-            if(entity.getType() == MenuType.CATALOG.getValue()){//目录
+            if(entity.getType() == MenuTypeEnum.CATALOG.getValue()){//目录
                 entity.setList(getMenuTreeList(queryListParentId(entity.getMenuId(), menuIdList), menuIdList));
             }
             subMenuList.add(entity);

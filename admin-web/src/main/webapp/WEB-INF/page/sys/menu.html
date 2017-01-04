@@ -6,14 +6,19 @@
 </head>
 <body>
 <div id="adminapp">
+	<!--<div id="jqGrid_search" class="grid-search">
+		<a class="btn btn-default" href="javascript:;">搜索</a>
+		<a class="btn btn-default" href="javascript:;">重置</a>
+	</div>-->
+
 	<div class="grid-btn">
-		#if($shiro.hasPermission("sys:menu:save"))
+		#if($shiro.hasPermission($fieldTool.in("org.jigang.plat.admin.constant.PermConstant").SYS_MENU_SAVE))
 		<a class="btn btn-default" href="menu_add.html">新增</a>
 		#end
-		#if($shiro.hasPermission("sys:menu:update"))
+		#if($shiro.hasPermission($fieldTool.in("org.jigang.plat.admin.constant.PermConstant").SYS_MENU_UPDATE))
 		<button type="button"  class="btn btn-default" @click="update">修改</button>
 		#end
-		#if($shiro.hasPermission("sys:menu:delete"))
+		#if($shiro.hasPermission($fieldTool.in("org.jigang.plat.admin.constant.PermConstant").SYS_MENU_DELETE))
 		<button type="button" class="btn btn-default" @click="del">删除</button>
 		#end
 	</div>
