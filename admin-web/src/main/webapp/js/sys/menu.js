@@ -1,11 +1,16 @@
 $(function () {
+	datePicker = function(elem) {
+		jQuery(elem).datepicker({dateFormat: "yy-mm-dd"})
+	}
     $("#jqGrid").jqGrid({
         url: '../sys/menu/list',
+		mtype: 'post',
         datatype: "json",
+		postData: {},
         colModel: [			
 			{ label: '菜单ID', name: 'menuId', width: 40, key: true},
 			{ label: '菜单名称', name: 'name', width: 60, search: true, stype: 'text'},
-			{ label: '上级菜单', name: 'parentName', width: 60},
+			{ label: '上级菜单', name: 'parentName', width: 60, stype: "text", searchoptions: {dataInit: datePicker}},
 			{ label: '菜单图标', name: 'icon', width: 50, formatter: function(value, options, row){
 				return value == null ? '' : '<i class="'+value+' fa-lg"></i>';
 			}},
@@ -21,8 +26,8 @@ $(function () {
 				if(value === 2){
 					return '<span class="label label-warning">按钮</span>';
 				}
-			}},
-			{ label: '排序号', name: 'orderNum', width: 50}
+			}, stype: "select", searchoptions: {value: "99:All;0:目录;1:菜单;2:按钮"}},
+			{ label: '排序号', name: 'orderNum', width: 50, stype: "text", searchoptions: {dataInit: datePicker}}
         ],
 		viewrecords: true,
         height: 400,
@@ -47,28 +52,27 @@ $(function () {
         gridComplete:function(){
         	//隐藏grid底部滚动条
         	$("#jqGrid").closest(".ui-jqgrid-bdiv").css({ "overflow-x" : "hidden" }); 
-        }
+        },
+		serializeGridData: function(postData) {
+			return JSON.stringify(postData);
+		}
     });
-	/*.navGrid('#jqGridPager',
-	{refresh:false,view:false, del:false,add:false,edit:false,searchtext:'查询'},{},{},{},{multipleSearch:true} );*/
-
+	/*$("#jqGrid").navGrid("#jqGridPager", {
+			add: false, edit: false, del: false, refresh: false, searchtext: "查找"
+		 },
+		 {}, {}, {},
+		 {multipleSearch: true, sopt: ['eq']}
+	 );*/
 	// jQuery("#jqGrid").jqGrid('filterToolbar',{}); //toolBar search
-
 	//custom search
-	var sg = jQuery("#jqGrid_search").filterGrid('#jqGrid',{
-		filterModel: [
-			{label:'菜单名称', name: 'name', stype: 'text', defval: ''},
-			{label:'上级菜单', name: 'parentName', stype: 'text', defval: ''},
-			{label:'菜单URL', name: 'parentName', stype: 'text', defval: ''},
-			{label:'授权标识', name: 'perms', stype: 'text', defval: ''},
-		],
-		searchButton: "搜索",
-		clearButton: "重置",
-		enableSearch: true,
-		enableClear: true
+	/*var sg = jQuery("#jqGrid_search").filterGrid('#jqGrid',{
+		gridModel: true,
+		gridNames: true,
+		searchButton: "search",
+		clearButton: "clear"
 	})[0];
-	// sg.triggerSearch();
-	// sg.clearSearch();
+	 sg.triggerSearch();
+	 sg.triggerSearch();*/
 });
 
 var vm = new Vue({
@@ -77,6 +81,12 @@ var vm = new Vue({
 		
 	},
 	methods: {
+		reload: function () {
+			$("#jqGrid").jqGrid('setGridParam',{
+				datatype:'json',
+				postData:{aa: "aa", bb: "bb"}, //发送数据
+			}).trigger("reloadGrid");
+		},
 		update: function (event) {
 			var menuId = getSelectedRow();
 			if(menuId == null){

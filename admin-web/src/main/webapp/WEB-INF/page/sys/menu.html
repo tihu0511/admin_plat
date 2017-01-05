@@ -7,9 +7,11 @@
 <body>
 <div id="adminapp">
 	<!--<div id="jqGrid_search" class="grid-search">
-		<a class="btn btn-default" href="javascript:;">搜索</a>
-		<a class="btn btn-default" href="javascript:;">重置</a>
+		<a class="btn btn-default" href="javascript:;" @click="search">搜索</a>
+		<a class="btn btn-default" href="javascript:;" @click="clearSearch">重置</a>
 	</div>-->
+	<div id="jqGrid_search" class="grid-search"></div>
+	<a class="btn btn-default" href="javascript:;" @click="reload">刷新</a>
 
 	<div class="grid-btn">
 		#if($shiro.hasPermission($fieldTool.in("org.jigang.plat.admin.constant.PermConstant").SYS_MENU_SAVE))
