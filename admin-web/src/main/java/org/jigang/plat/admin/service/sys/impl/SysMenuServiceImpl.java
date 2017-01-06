@@ -5,11 +5,14 @@ import org.jigang.plat.admin.dao.sys.ISysMenuDao;
 import org.jigang.plat.admin.entity.sys.SysMenuEntity;
 import org.jigang.plat.admin.service.sys.ISysMenuService;
 import org.jigang.plat.admin.service.sys.ISysUserService;
+import org.jigang.plat.core.lang.util.CollectionUtil;
+import org.jigang.plat.core.lang.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -70,10 +73,62 @@ public class SysMenuServiceImpl implements ISysMenuService {
         return sysMenuDao.queryList(map);
     }
 
+    public List<SysMenuEntity> queryList(Map<String, Object> map, SysMenuEntity menuCondition) {
+        fillParentIdCondition(map, menuCondition);
+        escapeSysMenuCondition(map, menuCondition);
+        return queryList(map);
+    }
+
+    private void escapeSysMenuCondition(Map<String, Object> map, SysMenuEntity menuCondition) {
+        if (null != menuCondition) {
+            if (StringUtil.hasLength(menuCondition.getName())) {
+                menuCondition.setName("%" + menuCondition.getName() + "%");
+            }
+            if (StringUtil.hasLength(menuCondition.getUrl())) {
+                menuCondition.setUrl("%" + menuCondition.getUrl() + "%");
+            }
+            if (StringUtil.hasLength(menuCondition.getPerms())) {
+                menuCondition.setPerms("%" + menuCondition.getPerms() + "%");
+            }
+            map.put("sysMenu", menuCondition);
+        }
+    }
+
+    private void fillParentIdCondition(Map<String, Object> map, SysMenuEntity menuCondition) {
+        if (null != menuCondition && StringUtil.hasLength(menuCondition.getParentName())) {
+            SysMenuEntity condition = new SysMenuEntity();
+            condition.setName("%" + menuCondition.getParentName() + "%");
+            List<SysMenuEntity> parentMenus = sysMenuDao.query(condition);
+            if (!CollectionUtil.isEmpty(parentMenus)) {
+                map.put("parentIds", loopParentId(parentMenus));
+            }
+        }
+    }
+
+    private List<Long> loopParentId(List<SysMenuEntity> parentMenus) {
+        if (CollectionUtil.isEmpty(parentMenus)) {
+            return null;
+        }
+        List<Long> parentIds = new ArrayList<Long>();
+        for (SysMenuEntity sysMenu : parentMenus) {
+            parentIds.add(sysMenu.getMenuId());
+        }
+        return parentIds;
+    }
+
     @Override
     public int queryTotal(Map<String, Object> map) {
         return sysMenuDao.queryTotal(map);
     }
+
+    @Override
+    public int queryTotal(Map<String, Object> map, SysMenuEntity menuCondition) {
+        fillParentIdCondition(map, menuCondition);
+        escapeSysMenuCondition(map, menuCondition);
+        return sysMenuDao.queryTotal(map);
+    }
+
+
 
     @Override
     public void save(SysMenuEntity menu) {

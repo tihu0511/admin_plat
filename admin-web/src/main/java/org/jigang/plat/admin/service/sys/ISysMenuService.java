@@ -41,9 +41,19 @@ public interface ISysMenuService {
     List<SysMenuEntity> queryList(Map<String, Object> map);
 
     /**
+     * 查询菜单列表
+     * @param map
+     * @param menuCondition
+     * @return
+     */
+    List<SysMenuEntity> queryList(Map<String, Object> map, SysMenuEntity menuCondition);
+
+    /**
      * 查询总数
      */
     int queryTotal(Map<String, Object> map);
+
+    int queryTotal(Map<String, Object> map, SysMenuEntity menuCondition);
 
     /**
      * 保存菜单
@@ -59,4 +69,5 @@ public interface ISysMenuService {
      * 删除
      */
     void deleteBatch(Long[] menuIds);
+
 }

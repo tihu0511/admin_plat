@@ -1,19 +1,16 @@
 $(function () {
-	datePicker = function(elem) {
-		jQuery(elem).datepicker({dateFormat: "yy-mm-dd"})
-	}
     $("#jqGrid").jqGrid({
         url: '../sys/menu/list',
 		mtype: 'post',
         datatype: "json",
 		postData: {},
         colModel: [			
-			{ label: '菜单ID', name: 'menuId', width: 40, key: true},
-			{ label: '菜单名称', name: 'name', width: 60, search: true, stype: 'text'},
-			{ label: '上级菜单', name: 'parentName', width: 60, stype: "text", searchoptions: {dataInit: datePicker}},
+			{ label: '菜单ID', name: 'menuId', width: 40, key: true, search: false},
+			{ label: '菜单名称', name: 'name', width: 60},
+			{ label: '上级菜单', name: 'parentName', width: 60},
 			{ label: '菜单图标', name: 'icon', width: 50, formatter: function(value, options, row){
 				return value == null ? '' : '<i class="'+value+' fa-lg"></i>';
-			}},
+			}, search: false},
 			{ label: '菜单URL', name: 'url', width: 100 },
 			{ label: '授权标识', name: 'perms', width: 100 },
 			{ label: '类型', name: 'type', width: 50, formatter: function(value, options, row){
@@ -26,8 +23,8 @@ $(function () {
 				if(value === 2){
 					return '<span class="label label-warning">按钮</span>';
 				}
-			}, stype: "select", searchoptions: {value: "99:All;0:目录;1:菜单;2:按钮"}},
-			{ label: '排序号', name: 'orderNum', width: 50, stype: "text", searchoptions: {dataInit: datePicker}}
+			}, stype: "select", searchoptions: {value: ":All;0:目录;1:菜单;2:按钮"}},
+			{ label: '排序号', name: 'orderNum', width: 50, search: false}
         ],
 		viewrecords: true,
         height: 400,
@@ -63,7 +60,11 @@ $(function () {
 		 {}, {}, {},
 		 {multipleSearch: true, sopt: ['eq']}
 	 );*/
-	// jQuery("#jqGrid").jqGrid('filterToolbar',{}); //toolBar search
+
+	jQuery("#jqGrid").jqGrid('filterToolbar',{
+		autosearch: false
+	}); //toolBar search
+
 	//custom search
 	/*var sg = jQuery("#jqGrid_search").filterGrid('#jqGrid',{
 		gridModel: true,
@@ -81,12 +82,6 @@ var vm = new Vue({
 		
 	},
 	methods: {
-		reload: function () {
-			$("#jqGrid").jqGrid('setGridParam',{
-				datatype:'json',
-				postData:{aa: "aa", bb: "bb"}, //发送数据
-			}).trigger("reloadGrid");
-		},
 		update: function (event) {
 			var menuId = getSelectedRow();
 			if(menuId == null){

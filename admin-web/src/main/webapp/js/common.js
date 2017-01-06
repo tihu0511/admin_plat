@@ -73,3 +73,17 @@ function getSelectedRows() {
     
     return grid.getGridParam("selarrrow");
 }
+
+datePicker = function(elem) {
+	jQuery(elem).datepicker({dateFormat: "yy-mm-dd"})
+}
+
+doSearch = function (jqGridId) {
+	$("#" + jqGridId)[0].triggerToolbar();
+}
+clearSearch = function (jqGridId) {
+	$("#" + jqGridId)[0].clearToolbar();
+}
+toogleSearch = function (jqGridId) {
+	$("#" + jqGridId)[0].toggleToolbar();
+}

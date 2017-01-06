@@ -9,7 +9,8 @@ import org.jigang.plat.admin.exception.AdminException;
 import org.jigang.plat.admin.service.sys.ISysMenuService;
 import org.jigang.plat.admin.util.WebResponse;
 import org.jigang.plat.admin.web.controller.BaseController;
-import org.jigang.plat.admin.web.form.SearchCondition;
+import org.jigang.plat.admin.web.form.sys.MenuForm;
+import org.jigang.plat.core.lang.util.BeanUtil;
 import org.jigang.plat.core.lang.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -38,18 +39,19 @@ public class SysMenuController extends BaseController {
      */
     @RequestMapping("/list")
     @RequiresPermissions(PermConstant.SYS_MENU_LIST)
-    public WebResponse list(@RequestBody SearchCondition condition) {
-        Integer page = condition.getPage();
-        Integer limit = condition.getLimit();
+    public WebResponse list(@RequestBody MenuForm form) {
+        Integer page = form.getPage();
+        Integer limit = form.getLimit();
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("offset", (page - 1) * limit);
         map.put("limit", limit);
 
-
+        SysMenuEntity menuCondition = new SysMenuEntity();
+        BeanUtil.copyProperties(menuCondition, form);
 
         //查询列表数据
-        List<SysMenuEntity> menuList = sysMenuService.queryList(map);
-        int total = sysMenuService.queryTotal(map);
+        List<SysMenuEntity> menuList = sysMenuService.queryList(map, menuCondition);
+        int total = sysMenuService.queryTotal(map, menuCondition);
 
         PageEntityWrapper pageEntity = new PageEntityWrapper(menuList, total, limit, page);
 

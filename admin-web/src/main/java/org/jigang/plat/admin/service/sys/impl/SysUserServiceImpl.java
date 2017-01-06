@@ -54,8 +54,35 @@ public class SysUserServiceImpl implements ISysUserService {
     }
 
     @Override
+    public List<SysUserEntity> queryList(Map<String, Object> map, SysUserEntity userCondition) {
+        escapeUserCondition(map, userCondition);
+        return queryList(map);
+    }
+
+    private void escapeUserCondition(Map<String, Object> map, SysUserEntity userCondition) {
+        if (null != userCondition) {
+            if (StringUtil.hasLength(userCondition.getUsername())) {
+                userCondition.setUsername("%" + userCondition.getUsername() + "%");
+            }
+            if (StringUtil.hasLength(userCondition.getEmail())) {
+                userCondition.setEmail("%" + userCondition.getEmail() + "%");
+            }
+            if (StringUtil.hasLength(userCondition.getMobile())) {
+                userCondition.setMobile("%" + userCondition.getMobile() + "%");
+            }
+            map.put("sysUser", userCondition);
+        }
+    }
+
+    @Override
     public int queryTotal(Map<String, Object> map) {
         return sysUserDao.queryTotal(map);
+    }
+
+    @Override
+    public int queryTotal(Map<String, Object> map, SysUserEntity userCondition) {
+        escapeUserCondition(map, userCondition);
+        return queryTotal(map);
     }
 
     @Override

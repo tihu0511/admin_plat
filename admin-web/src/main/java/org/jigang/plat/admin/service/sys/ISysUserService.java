@@ -40,10 +40,14 @@ public interface ISysUserService {
      */
     List<SysUserEntity> queryList(Map<String, Object> map);
 
+    List<SysUserEntity> queryList(Map<String, Object> map, SysUserEntity userCondition);
+
     /**
      * 查询总数
      */
     int queryTotal(Map<String, Object> map);
+
+    int queryTotal(Map<String, Object> map, SysUserEntity userCondition);
 
     /**
      * 保存用户
@@ -67,4 +71,6 @@ public interface ISysUserService {
      * @param newPassword  新密码
      */
     int updatePassword(Long userId, String password, String newPassword);
+
+
 }

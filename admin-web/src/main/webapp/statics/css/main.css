@@ -31,6 +31,9 @@ html { overflow-x:hidden; }
 .grid-btn .btn{
 	margin-right:10px;
 }
+.btn-right{
+	float: right;
+}
 .pointer{cursor: pointer;}
 
 .ml-10 { margin-left:0 !important; }

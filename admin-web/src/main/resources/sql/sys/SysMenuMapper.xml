@@ -2,6 +2,27 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="org.jigang.plat.admin.dao.sys.ISysMenuDao">
+	<sql id="whereClause">
+		where 1 = 1
+		<if test="sysMenu != null and sysMenu.menuId != null">
+			and menu_id = #{sysMenu.menuId}
+		</if>
+		<if test="sysMenu != null and sysMenu.parentId != null">
+			and parent_id = #{sysMenu.parentId}
+		</if>
+		<if test="sysMenu != null and sysMenu.name != null">
+			and name like #{sysMenu.name}
+		</if>
+		<if test="sysMenu != null and sysMenu.url != null">
+			and url like #{sysMenu.url}
+		</if>
+		<if test="sysMenu != null and sysMenu.perms != null">
+			and perms like #{sysMenu.perms}
+		</if>
+		<if test="sysMenu != null and sysMenu.type != null">
+			and type = #{sysMenu.type}
+		</if>
+	</sql>
 
 	<select id="queryObject" resultType="org.jigang.plat.admin.entity.sys.SysMenuEntity">
 		select * from sys_menu where menu_id = #{value}
@@ -31,25 +52,61 @@
 			#{orderNum}
 		)
 	</insert>
-	
+
+	<select id="query" resultType="org.jigang.plat.admin.entity.sys.SysMenuEntity" parameterType="org.jigang.plat.admin.entity.sys.SysMenuEntity">
+		select * from sys_menu
+		<include refid="whereClause"/>
+		order by order_num asc
+	</select>
+
 	<select id="queryListParentId" resultType="org.jigang.plat.admin.entity.sys.SysMenuEntity">
 		select * from sys_menu where parent_id = #{parentId} order by order_num asc 
 	</select>
-	
+
 	<select id="queryNotButtonList" resultType="org.jigang.plat.admin.entity.sys.SysMenuEntity">
 		select * from sys_menu where type != 2 order by order_num asc 
 	</select>
-	
+
 	<select id="queryList" resultType="org.jigang.plat.admin.entity.sys.SysMenuEntity">
 		select m.*,(select p.name from sys_menu p where p.menu_id = m.parent_id) as parentName 
-			from sys_menu m order by m.order_num asc 
+		from sys_menu m
+		where 1 = 1
+			<if test="sysMenu != null and sysMenu.name != null">
+				and m.name like #{sysMenu.name}
+			</if>
+			<if test="sysMenu != null and sysMenu.parentId != null">
+				and m.parent_id = #{sysMenu.parentId}
+			</if>
+			<if test="sysMenu != null and sysMenu.url != null">
+				and m.url like #{sysMenu.url}
+			</if>
+			<if test="sysMenu != null and sysMenu.perms != null">
+				and m.perms like #{sysMenu.perms}
+			</if>
+			<if test="sysMenu != null and sysMenu.type != null">
+				and m.type = #{sysMenu.type}
+			</if>
+			<if test="parentIds != null">
+				and m.parent_id in
+				<foreach item="parentId" collection="parentIds" open="(" separator="," close=")">
+					#{parentId}
+				</foreach>
+			</if>
+		order by m.order_num asc
 		<if test="offset != null and limit != null">
 			limit #{offset}, #{limit}
 		</if>
 	</select>
-	
+
 	<select id="queryTotal" resultType="int">
 		select count(*) from sys_menu
+		<include refid="whereClause"/>
+		<if test="parentIds != null">
+			and parent_id in
+			<foreach item="parentId" collection="parentIds" open="(" separator="," close=")">
+				#{parentId}
+			</foreach>
+		</if>
 	</select>
 	 
 	<update id="update" parameterType="org.jigang.plat.admin.entity.sys.SysMenuEntity">

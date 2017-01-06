@@ -6,14 +6,10 @@
 </head>
 <body>
 <div id="adminapp">
-	<!--<div id="jqGrid_search" class="grid-search">
-		<a class="btn btn-default" href="javascript:;" @click="search">搜索</a>
-		<a class="btn btn-default" href="javascript:;" @click="clearSearch">重置</a>
-	</div>-->
-	<div id="jqGrid_search" class="grid-search"></div>
-	<a class="btn btn-default" href="javascript:;" @click="reload">刷新</a>
-
 	<div class="grid-btn">
+		<a class="btn btn-default btn-right" href="javascript:;" onclick="toogleSearch('jqGrid')">隐藏/显示搜索框</a>
+		<a class="btn btn-default btn-right" href="javascript:;" onclick="clearSearch('jqGrid')">重置</a>
+		<a class="btn btn-default btn-right" href="javascript:;" onclick="doSearch('jqGrid')">搜索</a>
 		#if($shiro.hasPermission($fieldTool.in("org.jigang.plat.admin.constant.PermConstant").SYS_MENU_SAVE))
 		<a class="btn btn-default" href="menu_add.html">新增</a>
 		#end
