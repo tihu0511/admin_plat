@@ -2,13 +2,23 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="org.jigang.plat.admin.dao.sys.ISysRoleDao">
-
+	<sql id="whereClause">
+		WHERE 1 = 1
+		<if test="sysRole != null and sysRole.roleId != null">
+			AND role_id = #{sysRole.roleId}
+		</if>
+		<if test="sysRole != null and sysRole.roleName != null">
+			AND role_name LIKE #{sysRole.roleName}
+		</if>
+	</sql>
 	<select id="queryObject" resultType="org.jigang.plat.admin.entity.sys.SysRoleEntity">
 		select * from sys_role where role_id = #{value}
 	</select>
 	
 	 <select id="queryList" resultType="org.jigang.plat.admin.entity.sys.SysRoleEntity">
-		select * from sys_role order by role_id asc 
+		select * from sys_role
+		<include refid="whereClause"/>
+		order by role_id asc
 		<if test="offset != null and limit != null">
 			limit #{offset}, #{limit}
 		</if>
@@ -16,6 +26,7 @@
 	
 	<select id="queryTotal" resultType="int">
 		select count(*) from sys_role
+		<include refid="whereClause"/>
 	</select>
 	
 	<insert id="save" parameterType="org.jigang.plat.admin.entity.sys.SysRoleEntity" useGeneratedKeys="true" keyProperty="roleId">

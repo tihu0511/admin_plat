@@ -7,6 +7,8 @@ import org.jigang.plat.admin.entity.sys.SysRoleEntity;
 import org.jigang.plat.admin.service.sys.ISysRoleMenuService;
 import org.jigang.plat.admin.service.sys.ISysRoleService;
 import org.jigang.plat.admin.util.WebResponse;
+import org.jigang.plat.admin.web.form.sys.RoleForm;
+import org.jigang.plat.core.lang.util.BeanUtil;
 import org.jigang.plat.core.lang.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -37,14 +39,19 @@ public class SysRoleController {
      */
     @RequestMapping("/list")
     @RequiresPermissions(PermConstant.SYS_ROLE_LIST)
-    public WebResponse list(Integer page, Integer limit){
+    public WebResponse list(@RequestBody RoleForm form){
+        Integer limit = form.getLimit();
+        Integer page = form.getPage();
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("offset", (page - 1) * limit);
         map.put("limit", limit);
 
+        SysRoleEntity roleCondition = new SysRoleEntity();
+        BeanUtil.copyProperties(roleCondition, form);
+
         //查询列表数据
-        List<SysRoleEntity> list = sysRoleService.queryList(map);
-        int total = sysRoleService.queryTotal(map);
+        List<SysRoleEntity> list = sysRoleService.queryList(map, roleCondition);
+        int total = sysRoleService.queryTotal(map, roleCondition);
 
         PageEntityWrapper pageUtil = new PageEntityWrapper(list, total, limit, page);
 

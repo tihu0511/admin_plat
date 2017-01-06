@@ -1,12 +1,13 @@
 $(function () {
     $("#jqGrid").jqGrid({
         url: '../sys/role/list',
+		mtype: 'post',
         datatype: "json",
         colModel: [			
 			{ label: '角色ID', name: 'roleId', width: 45, key: true },
 			{ label: '角色名称', name: 'roleName', width: 75 },
-			{ label: '备注', name: 'remark', width: 100 },
-			{ label: '创建时间', name: 'createTime', width: 80}                   
+			{ label: '备注', name: 'remark', width: 100, search: false},
+			{ label: '创建时间', name: 'createTime', width: 80, search: false}
         ],
 		viewrecords: true,
         height: 400,
@@ -31,8 +32,14 @@ $(function () {
         gridComplete:function(){
         	//隐藏grid底部滚动条
         	$("#jqGrid").closest(".ui-jqgrid-bdiv").css({ "overflow-x" : "hidden" }); 
-        }
+        },
+		serializeGridData: function(postData) {
+			return JSON.stringify(postData);
+		}
     });
+	jQuery("#jqGrid").jqGrid('filterToolbar',{
+		autosearch: false
+	});
 });
 
 var vm = new Vue({

@@ -15,12 +15,15 @@ public interface ISysRoleService {
     SysRoleEntity queryObject(Long roleId);
 
     List<SysRoleEntity> queryList(Map<String, Object> map);
+    List<SysRoleEntity> queryList(Map<String, Object> map, SysRoleEntity roleCondition);
 
     int queryTotal(Map<String, Object> map);
+    int queryTotal(Map<String, Object> map, SysRoleEntity roleCondition);
 
     void save(SysRoleEntity role);
 
     void update(SysRoleEntity role);
 
     void deleteBatch(Long[] roleIds);
+
 }

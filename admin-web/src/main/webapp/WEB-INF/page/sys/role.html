@@ -1,26 +1,29 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>角色管理</title>
-#parse("header.html")
+    <title>角色管理</title>
+    #parse("header.html")
 </head>
 <body>
 <div id="adminapp">
-	<div class="grid-btn">
-		#if($shiro.hasPermission($fieldTool.in("org.jigang.plat.admin.constant.PermConstant").SYS_ROLE_SAVE))
-		<a class="btn btn-default" href="role_add.html">新增</a>
-		#end
-		#if($shiro.hasPermission($fieldTool.in("org.jigang.plat.admin.constant.PermConstant").SYS_ROLE_UPDATE))
-		<button type="button"  class="btn btn-default" @click="update">修改</button>
-		#end
-		#if($shiro.hasPermission($fieldTool.in("org.jigang.plat.admin.constant.PermConstant").SYS_ROLE_DELETE))
-		<button type="button" class="btn btn-default" @click="del">删除</button>
-		#end
-	</div>
+    <div class="grid-btn">
+        <a class="btn btn-default btn-right" href="javascript:;" onclick="toogleSearch('jqGrid')">隐藏/显示搜索框</a>
+        <a class="btn btn-default btn-right" href="javascript:;" onclick="clearSearch('jqGrid')">重置</a>
+        <a class="btn btn-default btn-right" href="javascript:;" onclick="doSearch('jqGrid')">搜索</a>
+        #if($shiro.hasPermission($fieldTool.in("org.jigang.plat.admin.constant.PermConstant").SYS_ROLE_SAVE))
+        <a class="btn btn-default" href="role_add.html">新增</a>
+        #end
+        #if($shiro.hasPermission($fieldTool.in("org.jigang.plat.admin.constant.PermConstant").SYS_ROLE_UPDATE))
+        <button type="button" class="btn btn-default" @click="update">修改</button>
+        #end
+        #if($shiro.hasPermission($fieldTool.in("org.jigang.plat.admin.constant.PermConstant").SYS_ROLE_DELETE))
+        <button type="button" class="btn btn-default" @click="del">删除</button>
+        #end
+    </div>
     <table id="jqGrid"></table>
     <div id="jqGridPager"></div>
 </div>
-   
-<script src="${rc.contextPath}/js/sys/role.js?_${date.systemTime}"></script>    
+
+<script src="${rc.contextPath}/js/sys/role.js?_${date.systemTime}"></script>
 </body>
 </html>

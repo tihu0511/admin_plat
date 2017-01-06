@@ -5,6 +5,7 @@ import org.jigang.plat.admin.entity.sys.SysRoleEntity;
 import org.jigang.plat.admin.service.sys.ISysRoleMenuService;
 import org.jigang.plat.admin.service.sys.ISysRoleService;
 import org.jigang.plat.admin.service.sys.ISysUserRoleService;
+import org.jigang.plat.core.lang.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,8 +40,29 @@ public class SysRoleServiceImpl implements ISysRoleService {
     }
 
     @Override
+    public List<SysRoleEntity> queryList(Map<String, Object> map, SysRoleEntity roleCondition) {
+        escapeRoleCondition(map, roleCondition);
+        return queryList(map);
+    }
+
+    private void escapeRoleCondition(Map<String, Object> map, SysRoleEntity roleCondition) {
+        if (null != roleCondition) {
+            if (StringUtil.hasLength(roleCondition.getRoleName())) {
+                roleCondition.setRoleName("%" + roleCondition.getRoleName() + "%");
+            }
+            map.put("sysRole", roleCondition);
+        }
+    }
+
+    @Override
     public int queryTotal(Map<String, Object> map) {
         return sysRoleDao.queryTotal(map);
+    }
+
+    @Override
+    public int queryTotal(Map<String, Object> map, SysRoleEntity roleCondition) {
+        escapeRoleCondition(map, roleCondition);
+        return queryTotal(map);
     }
 
     @Override
