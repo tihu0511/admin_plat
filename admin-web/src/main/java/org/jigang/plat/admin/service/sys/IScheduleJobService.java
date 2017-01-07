@@ -22,10 +22,14 @@ public interface IScheduleJobService {
      */
     List<ScheduleJobEntity> queryList(Map<String, Object> map);
 
+    List<ScheduleJobEntity> queryList(Map<String, Object> map, ScheduleJobEntity jobCondition);
+
     /**
      * 查询总数
      */
     int queryTotal(Map<String, Object> map);
+
+    int queryTotal(Map<String, Object> map, ScheduleJobEntity jobCondition);
 
     /**
      * 保存定时任务
@@ -61,4 +65,5 @@ public interface IScheduleJobService {
      * 恢复运行
      */
     void resume(Long[] jobIds);
+
 }

@@ -2,19 +2,36 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="org.jigang.plat.admin.dao.sys.IScheduleJobDao">
+	<sql id="whereClause">
+		WHERE 1 = 1
+		<if test="job != null and job.jobId != null">
+			AND job_id = #{job.jobId}
+		</if>
+		<if test="job != null and job.beanName != null">
+			AND bean_name LIKE concat('%',#{job.beanName},'%')
+		</if>
+		<if test="job != null and job.methodName != null">
+			AND method_name LIKE concat('%',#{job.methodName},'%')
+		</if>
+		<if test="job != null and job.status != null">
+			AND status = #{job.status}
+		</if>
+	</sql>
 	<select id="queryObject" resultType="org.jigang.plat.admin.entity.sys.ScheduleJobEntity" >
 		select * from schedule_job where job_id = #{value}
 	</select> 
 
 	<select id="queryList" resultType="org.jigang.plat.admin.entity.sys.ScheduleJobEntity" >
 		select * from schedule_job
+		<include refid="whereClause"/>
 		<if test="offset != null and limit != null ">
 		limit #{offset}, #{limit}
 		</if>
 	</select>
 	
  	<select id="queryTotal" resultType="int">
-		select count(1) from schedule_job 
+		select count(1) from schedule_job
+		<include refid="whereClause"/>
 	</select>
 	 
 	<insert id="save" parameterType="org.jigang.plat.admin.entity.sys.ScheduleJobEntity" useGeneratedKeys="true" keyProperty="jobId">

@@ -37,10 +37,15 @@ public interface ISysConfigService {
      * 获取List列表
      */
     public List<SysConfigEntity> queryList(Map<String, Object> map);
+
+    List<SysConfigEntity> queryList(Map<String, Object> map, SysConfigEntity configCondition);
+
     /**
      * 获取总记录数
      */
-    public int queryTotal(Map<String, Object> map);
+    int queryTotal(Map<String, Object> map);
+
+    int queryTotal(Map<String, Object> map, SysConfigEntity configCondition);
 
     public SysConfigEntity queryObject(Long id);
 
@@ -58,4 +63,6 @@ public interface ISysConfigService {
      * @param clazz  Object对象
      */
     public <T> T getConfigObject(String key, Class<T> clazz) throws Exception;
+
+
 }

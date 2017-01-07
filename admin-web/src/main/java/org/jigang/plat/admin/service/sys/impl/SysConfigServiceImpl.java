@@ -5,6 +5,7 @@ import org.apache.commons.lang.StringUtils;
 import org.jigang.plat.admin.dao.sys.ISysConfigDao;
 import org.jigang.plat.admin.entity.sys.SysConfigEntity;
 import org.jigang.plat.admin.service.sys.ISysConfigService;
+import org.jigang.plat.core.lang.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -48,8 +49,29 @@ public class SysConfigServiceImpl implements ISysConfigService {
     }
 
     @Override
+    public List<SysConfigEntity> queryList(Map<String, Object> map, SysConfigEntity configCondition) {
+        escapeConfigCondition(map, configCondition);
+        return queryList(map);
+    }
+
+    private void escapeConfigCondition(Map<String, Object> map, SysConfigEntity configCondition) {
+        if (null != configCondition) {
+            if (StringUtil.hasLength(configCondition.getKey())) {
+                configCondition.setKey("%" + configCondition.getKey() + "%");
+            }
+            map.put("sysConfig", configCondition);
+        }
+    }
+
+    @Override
     public int queryTotal(Map<String, Object> map) {
         return sysConfigDao.queryTotal(map);
+    }
+
+    @Override
+    public int queryTotal(Map<String, Object> map, SysConfigEntity configCondition) {
+        escapeConfigCondition(map, configCondition);
+        return queryTotal(map);
     }
 
     @Override

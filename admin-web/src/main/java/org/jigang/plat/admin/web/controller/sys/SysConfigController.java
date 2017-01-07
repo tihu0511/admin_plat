@@ -8,6 +8,8 @@ import org.jigang.plat.admin.entity.sys.SysConfigEntity;
 import org.jigang.plat.admin.exception.AdminException;
 import org.jigang.plat.admin.service.sys.ISysConfigService;
 import org.jigang.plat.admin.util.WebResponse;
+import org.jigang.plat.admin.web.form.sys.ConfigForm;
+import org.jigang.plat.core.lang.util.BeanUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -35,14 +37,19 @@ public class SysConfigController {
      */
     @RequestMapping("/list")
     @RequiresPermissions(PermConstant.SYS_CONFIG_LIST)
-    public WebResponse list(Integer page, Integer limit){
+    public WebResponse list(@RequestBody ConfigForm form){
+        Integer page = form.getPage();
+        Integer limit = form.getLimit();
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("offset", (page - 1) * limit);
         map.put("limit", limit);
 
+        SysConfigEntity configCondition = new SysConfigEntity();
+        BeanUtil.copyProperties(configCondition, form);
+
         //查询列表数据
-        List<SysConfigEntity> configList = sysConfigService.queryList(map);
-        int total = sysConfigService.queryTotal(map);
+        List<SysConfigEntity> configList = sysConfigService.queryList(map, configCondition);
+        int total = sysConfigService.queryTotal(map, configCondition);
 
         PageEntityWrapper pageEntity = new PageEntityWrapper(configList, total, limit, page);
 

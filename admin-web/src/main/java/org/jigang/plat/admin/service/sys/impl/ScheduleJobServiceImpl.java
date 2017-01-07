@@ -5,6 +5,7 @@ import org.jigang.plat.admin.entity.sys.ScheduleJobEntity;
 import org.jigang.plat.admin.quartz.ScheduleStatus;
 import org.jigang.plat.admin.quartz.ScheduleUtil;
 import org.jigang.plat.admin.service.sys.IScheduleJobService;
+import org.jigang.plat.core.lang.util.StringUtil;
 import org.quartz.CronTrigger;
 import org.quartz.Scheduler;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,8 +59,24 @@ public class ScheduleJobServiceImpl implements IScheduleJobService {
     }
 
     @Override
+    public List<ScheduleJobEntity> queryList(Map<String, Object> map, ScheduleJobEntity jobCondition) {
+        if (null != jobCondition) {
+            map.put("job", jobCondition);
+        }
+        return queryList(map);
+    }
+
+    @Override
     public int queryTotal(Map<String, Object> map) {
         return schedulerJobDao.queryTotal(map);
+    }
+
+    @Override
+    public int queryTotal(Map<String, Object> map, ScheduleJobEntity jobCondition) {
+        if (null != jobCondition) {
+            map.put("job", jobCondition);
+        }
+        return queryTotal(map);
     }
 
     @Override

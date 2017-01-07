@@ -8,6 +8,8 @@ import org.jigang.plat.admin.entity.sys.ScheduleJobEntity;
 import org.jigang.plat.admin.exception.AdminException;
 import org.jigang.plat.admin.service.sys.IScheduleJobService;
 import org.jigang.plat.admin.util.WebResponse;
+import org.jigang.plat.admin.web.form.sys.ScheduleForm;
+import org.jigang.plat.core.lang.util.BeanUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -35,14 +37,19 @@ public class ScheduleJobController {
      */
     @RequestMapping("/list")
     @RequiresPermissions(PermConstant.SYS_SHCEDULE_LIST)
-    public WebResponse list(Integer page, Integer limit){
+    public WebResponse list(@RequestBody ScheduleForm form){
+        Integer page = form.getPage();
+        Integer limit = form.getLimit();
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("offset", (page - 1) * limit);
         map.put("limit", limit);
 
+        ScheduleJobEntity jobCondition = new ScheduleJobEntity();
+        BeanUtil.copyProperties(jobCondition, form);
+
         //查询列表数据
-        List<ScheduleJobEntity> jobList = scheduleJobService.queryList(map);
-        int total = scheduleJobService.queryTotal(map);
+        List<ScheduleJobEntity> jobList = scheduleJobService.queryList(map, jobCondition);
+        int total = scheduleJobService.queryTotal(map, jobCondition);
 
         PageEntityWrapper pageEntity = new PageEntityWrapper(jobList, total, limit, page);
 

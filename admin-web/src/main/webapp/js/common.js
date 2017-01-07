@@ -84,6 +84,6 @@ doSearch = function (jqGridId) {
 clearSearch = function (jqGridId) {
 	$("#" + jqGridId)[0].clearToolbar();
 }
-toogleSearch = function (jqGridId) {
+toggleSearch = function (jqGridId) {
 	$("#" + jqGridId)[0].toggleToolbar();
 }
