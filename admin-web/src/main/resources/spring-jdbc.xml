@@ -11,7 +11,7 @@
      	http://www.springframework.org/schema/tx/spring-tx-4.2.xsd">
 
 	<tx:annotation-driven />
-	<context:property-placeholder location="classpath:db.properties" />
+	<context:property-placeholder location="file:/data/my_plat/admin-web/db.properties" />
 
 	<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource"
 		init-method="init" destroy-method="close">
